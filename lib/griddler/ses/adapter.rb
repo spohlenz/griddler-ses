@@ -31,9 +31,9 @@ module Griddler
             from: sender,
             cc: cc,
             bcc: bcc,
-            subject: subject,
-            text: text_part,
-            html: html_part,
+            subject: encode(subject),
+            text: encode(text_part),
+            html: encode(html_part),
             headers: raw_headers,
             attachments: attachment_files
           )
@@ -43,6 +43,10 @@ module Griddler
       end
 
       private
+      def encode(str)
+        str.force_encoding('UTF-8') if str
+      end
+
       def email_json
         @email_json ||= JSON.parse(sns_json['Message'])
       end
@@ -131,4 +135,3 @@ module Griddler
     end
   end
 end
-
